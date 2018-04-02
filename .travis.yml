@@ -26,6 +26,7 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
     - '$HOME/docker'
+    - '$TRAVIS_BUILD_DIR/build'
 before_cache: 
   # Save tagged docker images
   - >
@@ -54,7 +55,7 @@ script:
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/latest/onescript-engine_1.0.19_all.deb  && sudo dpkg -i /tmp/oscript.deb"
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install && sudo opm update -all"
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init"
-  - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ${VANESSA_PATH} --settings ./tools/JSON/VBParams8310UF.json"
+  - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path $VANESSA_PATH --settings ./tools/JSON/VBParams8310UF.json"
   #- sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build ./"
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
