@@ -15,7 +15,12 @@ addons:
 env:
   global:
   - ONECVERSION=8.3.10.2639
-
+  matrix:
+  - VANESSA_PATH=./build/feature/Core/TestClient/
+  - VANESSA_PATH=./build/feature/StepsGenerator/
+  - VANESSA_PATH=./build/feature/StepsProgramming/
+  - VANESSA_PATH=./build/feature/StepsRunner/
+  
 cache:
   directories:
     - '$HOME/.m2/repository'
@@ -49,43 +54,43 @@ script:
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/latest/onescript-engine_1.0.19_all.deb  && sudo dpkg -i /tmp/oscript.deb"
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install && sudo opm update -all"
   - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init"
-  #- sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core --settings ./tools/JSON/VBParams8310UF.json"
-  - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build ./"
+  - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ${VANESSA_PATH} --settings ./tools/JSON/VBParams8310UF.json"
+  #- sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build ./"
   # Clean up
   - sudo docker stop "$(cat /tmp/container_id)"
   - sudo docker stop "$(cat /tmp/container_idngrok )"
-  - sudo 7z a add.tar ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf
-  - sudo 7z a add.7z ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf
-  - sudo 7z a add.tar.gz add.tar
-  - sudo 7z a add.tar.bz2 add.tar
+  #- sudo 7z a add.tar ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf
+  #- sudo 7z a add.7z ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf
+  #- sudo 7z a add.tar.gz add.tar
+  #- sudo 7z a add.tar.bz2 add.tar
   
 
 notifications:
   email: true
 
-deploy:
-  - provider: releases
-    api_key:
-      secure: "$GITHUB_OAUTH_TOKEN"
-    file:
-      - "add.tar.gz"
-      - "add.7z"
-      - "add-*.ospx"
-      - "add.tar.bz2"
-    file_glob: "true" 
-    skip_cleanup: true
-    on:
-      tags: true
-      branch: master
+# deploy:
+#   - provider: releases
+#     api_key:
+#       secure: "$GITHUB_OAUTH_TOKEN"
+#     file:
+#       - "add.tar.gz"
+#       - "add.7z"
+#       - "add-*.ospx"
+#       - "add.tar.bz2"
+#     file_glob: "true" 
+#     skip_cleanup: true
+#     on:
+#       tags: true
+#       branch: master
   
-  - provider: script
-    skip_cleanup: true
-    script: docker run -it -v $(pwd):/work_dir evilbeaver/onescript:1.0.19 sh -c 'cd /work_dir; opm push --token $GITHUB_OAUTH_TOKEN --channel dev --file ./add-*.ospx; exit'
-    on:
-      branch: develop
-  - provider: script
-    skip_cleanup: true
-    script: docker run -it -v $(pwd):/work_dir evilbeaver/onescript:1.0.19 sh -c 'cd /work_dir; opm push --token $GITHUB_OAUTH_TOKEN --channel stable --file ./add-*.ospx; exit'
-    on:
-      branch: master
-      tags: true
+#   - provider: script
+#     skip_cleanup: true
+#     script: docker run -it -v $(pwd):/work_dir evilbeaver/onescript:1.0.19 sh -c 'cd /work_dir; opm push --token $GITHUB_OAUTH_TOKEN --channel dev --file ./add-*.ospx; exit'
+#     on:
+#       branch: develop
+#   - provider: script
+#     skip_cleanup: true
+#     script: docker run -it -v $(pwd):/work_dir evilbeaver/onescript:1.0.19 sh -c 'cd /work_dir; opm push --token $GITHUB_OAUTH_TOKEN --channel stable --file ./add-*.ospx; exit'
+#     on:
+#       branch: master
+#       tags: true
