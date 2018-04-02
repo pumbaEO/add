@@ -14,7 +14,7 @@ addons:
 
 env:
   global:
-  - ONECVERSION=8.3.11.2867
+  - ONECVERSION=8.3.10.2639
 
 cache:
   directories:
