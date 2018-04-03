@@ -54,8 +54,8 @@ jobs:
       - sudo docker stop "$(cat /tmp/container_id)"
 
   - stage: test
-      env:
-        - FEATURES=./features/StepsRunner/
+    env:
+      - FEATURES="./features/StepsRunner/""
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
@@ -97,7 +97,6 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/ExpectedSomething/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
-
 
   - stage: test
     env:
