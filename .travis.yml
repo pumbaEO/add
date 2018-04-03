@@ -64,7 +64,7 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/night-build/onescript-engine_1.0.20_all.deb  && sudo dpkg -i /tmp/oscript.deb"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install  > /dev/null 2>&1 && sudo opm update -all  > /dev/null 2>&1"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build"
-      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/StepsRunner/ --settings ./tools/JSON/VBParams8310UF.json"
+      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessatravis all --path ./features/StepsRunner/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
@@ -79,7 +79,7 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/night-build/onescript-engine_1.0.20_all.deb  && sudo dpkg -i /tmp/oscript.deb"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install > /dev/null 2>&1 && sudo opm update -all > /dev/null 2>&1"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build"
-      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/StepsProgramming/ --settings ./tools/JSON/VBParams8310UF.json"
+      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessatravis all --path ./features/StepsProgramming/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
@@ -94,7 +94,7 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/night-build/onescript-engine_1.0.20_all.deb  && sudo dpkg -i /tmp/oscript.deb"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install > /dev/null 2>&1 && sudo opm update -all > /dev/null 2>&1"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build"
-      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/ExpectedSomething/ --settings ./tools/JSON/VBParams8310UF.json"
+      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessatravis all --path ./features/Core/ExpectedSomething/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
@@ -109,7 +109,7 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/night-build/onescript-engine_1.0.20_all.deb  && sudo dpkg -i /tmp/oscript.deb"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install > /dev/null 2>&1 && sudo opm update -all > /dev/null 2>&1"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build"
-      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/Translate/ --settings ./tools/JSON/VBParams8310UF.json"
+      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessatravis all --path ./features/Core/Translate/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
@@ -124,7 +124,7 @@ jobs:
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 wget -q --continue -O /tmp/oscript.deb http://oscript.io/downloads/night-build/onescript-engine_1.0.20_all.deb  && sudo dpkg -i /tmp/oscript.deb"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install > /dev/null 2>&1 && sudo opm update -all > /dev/null 2>&1"
       - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build"
-      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/FeatureReader/ --settings ./tools/JSON/VBParams8310UF.json"
+      - sudo docker exec -u ubuntu "$(cat /tmp/container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessatravis all --path ./features/Core/FeatureReader/ --settings ./tools/JSON/VBParams8310UF.json"
       - sudo docker stop "$(cat /tmp/container_id)"
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
