@@ -3,6 +3,8 @@
 set -x
 set -e
 
+ls -al ${HOME}/docker/
+ls -al ${TRAVIS_BUILD_DIR}/build
 dockerid=`docker images -a --filter=reference="onec32/client:${ONECVERSION}" --format '{{.ID}}'`
 echo $dockerid
 if [[ -f ${HOME}/docker/onec32_client_${ONECVERSION}.tar.xz ]]; then
