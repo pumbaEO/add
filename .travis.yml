@@ -169,7 +169,6 @@ jobs:
     deploy:
       - provider: releases
         secure: "$GITHUB_OAUTH_TOKEN"
-          secure: "$GITHUB_OAUTH_TOKEN"
         file:
           - "add.tar.gz"
           - "add.7z"
