@@ -27,6 +27,17 @@ before_install:
   - sudo ./tools/linux/dockerdownload.sh
   - docker images | grep onec
 
+before_cache:
+  - sudo chown $USER -R $TRAVIS_BUILD_DIR/build
+  - rm -rf $TRAVIS_BUILD_DIR/build/ib
+  - rm -rf $TRAVIS_BUILD_DIR/build/ibservice
+  - rm -rf $TRAVIS_BUILD_DIR/build/ibxdd
+  - rm -f $TRAVIS_BUILD_DIR/build/ib
+  - rm -rf $TRAVIS_BUILD_DIR/build/ib
+  - rm -rf $TRAVIS_BUILD_DIR/build/ServiceBases
+  
+  
+  
 #install:
 #  - docker pull evilbeaver/onescript:1.0.19
 
