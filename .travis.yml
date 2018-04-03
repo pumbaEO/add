@@ -54,6 +54,8 @@ jobs:
       - sudo docker stop "$(cat /tmp/container_id)"
 
   - stage: test
+      env:
+        - FEATURES=./features/StepsRunner/
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
@@ -67,6 +69,8 @@ jobs:
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
   - stage: test
+    env:
+      - FEATURES=./features/StepsProgramming/
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
@@ -80,6 +84,8 @@ jobs:
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
   - stage: test
+    env:
+      - FEATURES=./features/Core/ExpectedSomething/
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
@@ -94,6 +100,8 @@ jobs:
 
 
   - stage: test
+    env:
+      - FEATURES=./features/Core/Translate/
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
@@ -107,6 +115,8 @@ jobs:
       - sudo docker stop "$(cat /tmp/container_idngrok )"
 
   - stage: test
+    env:
+      - FEATURES=./features/Core/FeatureReader/
     script:
       - sudo docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > /tmp/container_id
       - sudo docker ps && sleep 5
