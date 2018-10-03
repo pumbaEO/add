@@ -9,11 +9,6 @@ pool:
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
-- bash: |
-    sudo ./tools/linux/dockerdownload.sh
-    docker images | grep onec
-  displayName: 'Download docker'
-  
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
