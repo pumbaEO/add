@@ -1,5 +1,5 @@
-﻿<a id="markdown-add" name="add"></a>
-# ADD
+﻿<a id="markdown-vanessa-add--add-" name="vanessa-add--add-"></a>
+# Vanessa-ADD ( ADD )
 
 [![Открытый чат проекта https://gitter.im/silverbulleters/vanessa-behavoir](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/silverbulleters/vanessa-behavoir?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](http://ci.silverbulleters.org/buildStatus/icon?job=ADD%20test/develop)](http://ci.silverbulleters.org/job/ADD%20test/job/develop/)
@@ -7,9 +7,10 @@
 
 <!-- TOC insertAnchor:true -->
 
-- [ADD](#add)
+- [Vanessa-ADD ( ADD )](#vanessa-add--add-)
     - [Введение](#введение)
     - [Установка](#установка)
+    - [Справка и полезные ссылки](#справка-и-полезные-ссылки)
     - [Описание использования](#описание-использования)
     - [Подготовка автодокументации](#подготовка-автодокументации)
     - [Описание использования в режиме BDD](#описание-использования-в-режиме-bdd)
@@ -32,9 +33,9 @@
 <a id="markdown-введение" name="введение"></a>
 ## Введение 
 
-Продукт ADD (Automation Driven Development) есть набор инструментов для проверки качества решений на платформе 1С:Предприятие.
+Продукт Vanessa-ADD (Automation Driven Development) есть набор инструментов для проверки качества решений на платформе 1С:Предприятие.
 
-ADD is a set of testing tools for [1C:Enterprise 8 platform](http://v8.1c.ru) - Tests/behavior (TDD & BDD) for 1С:Enterprise.
+Vanessa-ADD is a set of testing tools for [1C:Enterprise 8 platform](http://v8.1c.ru) - Tests/behavior (TDD & BDD) for 1С:Enterprise.
 
 Миссия продукта - повышение качества разработки.
 
@@ -46,7 +47,7 @@ ADD is a set of testing tools for [1C:Enterprise 8 platform](http://v8.1c.ru) - 
 + проверка поведения (BDD/Gherkin)
 + формирование автодокументации в формате Markdown и видео.
 
-ADD является наследником 2-х продуктов - [xUnitFor1C](https://github.com/xDrivenDevelopment/xUnitFor1C) и [Vanessa-Behavior](https://github.com/silverbulleters/vanessa-behavior). Совместимость с VB 1.Х и xUnitFor1C 4.Х гарантирована.
+Vanessa-ADD является наследником 2-х продуктов - [xUnitFor1C](https://github.com/xDrivenDevelopment/xUnitFor1C) и [Vanessa-Behavior](https://github.com/silverbulleters/vanessa-behavior). Совместимость с VB 1.Х и xUnitFor1C 4.Х гарантирована.
 
 <a id="markdown-установка" name="установка"></a>
 ## Установка
@@ -69,12 +70,18 @@ ADD является наследником 2-х продуктов - [xUnitFor1
 + Скачать архив `add-x.x.x.zip` с последним стабильным релизом - прямая ссылка [Releases](https://github.com/silverbulleters/add/releases/latest)
 + Распаковать указанный архив в нужную папку.
 
+<a id="markdown-справка-и-полезные-ссылки" name="справка-и-полезные-ссылки"></a>
+## Справка и полезные ссылки
+
 Обязательно ознакомьтесь с:
 
-+ часто задаваемыми вопросами [FAQ.md](./F.A.Q.md)
++ **справкой по продукту** [doc/README.md](./doc/README.md)
+
++ часто задаваемыми вопросами [FAQ.md](./F.A.Q.MD)
 + руководством контрибьютора [CONTRIBUTING.md](./.github/CONTRIBUTING.md)
 + моделью спонсорства [DONATIONS.md](./DONATIONS.md)
-+ известные проблемы [KNOWN-PROBLEMS.md](./doc/KNOWN-PROBLEMS.md)
++ известными проблемами [KNOWN-PROBLEMS.md](./doc/KNOWN-PROBLEMS.md)
+
 
 Ночная сборка ветки **develop**:
 
@@ -113,15 +120,14 @@ ADD является наследником 2-х продуктов - [xUnitFor1
 
 Проект использует принцип формирования автодокументации в формате Markdown и видео.
 
-+ Markdown инструкции лежат [здесь](https://github.com/silverbulleters/vanessa-services/tree/master/ru-RU/behavior/Features)
 + Видео инструкции лежат [здесь](https://www.youtube.com/channel/UC2mJ4LlMG-FF4qkc_kqN_iQ)
 + Прочие инструкции сгруппированы [в этом плейлисте YouTube](https://www.youtube.com/playlist?list=PL2zlgf113YhFG_uRARjDtP1_Obj55UmY4)
 + Также рекомендуется посмотреть вот [этот вебинар](http://infostart.ru/webinars/537546/)
-+ Возможно вам поможет [этот FAQ](https://github.com/silverbulleters/add/blob/develop/F.A.Q.MD)
++ Возможно, вам поможет [этот FAQ](https://github.com/silverbulleters/add/blob/develop/F.A.Q.MD)
 
 Чтобы у вас работало создание автовидеоинструкций, необходимо установить дополнительный софт.
 
-Инструкция [здесь](https://github.com/silverbulleters/add/blob/develop/MakeAutoVideo.md).
+Инструкция по настройке окружения для формирования автовидеоинструкций [здесь](https://github.com/silverbulleters/add/blob/develop/MakeAutoVideo.md).
 Также по автовидеоинструкциям есть вот это замечательное [видео](https://www.youtube.com/watch?v=BfXowJH5uP0)
 
 <a id="markdown-описание-использования-в-режиме-bdd" name="описание-использования-в-режиме-bdd"></a>
@@ -317,7 +323,7 @@ ADD является наследником 2-х продуктов - [xUnitFor1
 + **A:** из известных нам - 63 команды
 
 + **Q: можно ли тестировать производительность с помощью BDD ?**
-+ **A:** для этого существует другой закрытый инструментарий, который использует vanessa-behavior как клиента тестирования - используется в Enterprise проектах.
++ **A:** для этого существует другой закрытый инструментарий, который использует vanessa-add как клиента тестирования - используется в Enterprise проектах.
 
 + **Q: Что вы думаете о сценарном тестировании ?**
 + **A:** сценарное тестирование слишком дорого по савокупной стоимости владения, поэтому пусть живет своей жизнью вместе с СППР, обратите внимание, что учебный центр №1 думает провести подготовку слушателей [по функционалу тестирования в 1С:Предприятии (ссылка на Facebook](https://www.facebook.com/1631718833760014/posts/1715544585377438/) - если Вас интересует функционал сценарного тестирования, возможно стоит записаться именно на этот курс, а не ходить по GitHub ссылкам.
