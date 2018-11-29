@@ -31,7 +31,7 @@ if (env.filterBuilds && env.filterBuilds.length() > 0 ) {
 def behaviortask(build, path, suffix, version){
     return {
 
-        node ("master") {
+        node ("test ${suffix}") {
                 echo "====== ${build} ${suffix} ====="
                 sleep 5
                 cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
@@ -41,16 +41,21 @@ def behaviortask(build, path, suffix, version){
                 try{
                     println "before env.LOGOS_LEVEL = \'DEBUG\' "
                     env.LOGOS_LEVEL = 'DEBUG'
-                    cmdstring='docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client \> ./container_id${suffix}${suffix}'
+                     def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
+                     gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
+                    echo gitCommit 
+                    dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+                    
                     echo cmdstring;
                     sh cmdstring;
                     // sh 'printenv'
-                    sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id${suffix}${suffix}'
                     sleep 5
                     sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
                     dir("build/ServiceBases/junitreport/${suffix}"){}
                         dir("build/ServiceBases/cucumber/${suffix}"){}
-                    sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build" '
+                        dockercmd("docker exec -u ubuntu", gitCommit, '"  /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build"')
+                        dockercmd("docker exec -u ubuntu", gitCommit, '"  /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run  vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"')
+                    //sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build" '
                     //cmd "opm run initib file --buildFolderPath ./build --v8version ${version}"
                     sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
                     //withEnv(["VANESSA_JUNITPATH=./ServiceBases/junitreport/${suffix}", "VANESSA_cucumberreportpath=./ServiceBases/cucumber/${suffix}"]) {
@@ -58,9 +63,8 @@ def behaviortask(build, path, suffix, version){
                        
                         echo "========= ${path} ====================="
                         
-                        sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build"'
-                        sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"'
-                        sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"'
+                        dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+
                         //cmd "opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json";
                     
                 } catch (e) {
@@ -122,9 +126,13 @@ tasks["buildRelease"] = {
     node("master"){
         stage("build release"){
             checkout scm
-            sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id'
-                    
-            sh 
+          //  sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id'
+        
+        def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
+        gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
+        echo gitCommit 
+              dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+                        
             
             
             
@@ -132,9 +140,7 @@ tasks["buildRelease"] = {
             
             
             
-            
-            
-            sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+            //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
             cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
             cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
             cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
@@ -143,7 +149,8 @@ tasks["buildRelease"] = {
                 env.LOGOS_LEVEL = 'DEBUG'
                 // sh 'printenv'
                 sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build ./"'
-                sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+                dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build  ./"')
+                dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
                 
                 // cmd "7z a add.tar ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf"
                 // cmd "7z a add.7z ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf"
@@ -200,8 +207,14 @@ firsttasks["master"] = {
         }
         stage("buld"){
             //def unix = isUnix()
-            sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id4'
-            sh 'docker exec -u ubuntu "$(cat ./container_id4)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+             def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
+            gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
+            echo gitCommit 
+            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build  ./"')
+            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+                    
+            
             cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']])
             cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']])
             // try{
@@ -210,9 +223,7 @@ firsttasks["master"] = {
                 env.LOGOS_LEVEL = 'DEBUG'
                 // sh 'printenv'
 
-    sh 'docker exec -u ubuntu "$(cat ./container_id4)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
- sh 'docker exec -u ubuntu "$(cat ./container_id4)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build --v8version 8.3.13"'
-    sh 'docker exec -u ubuntu "$(cat ./container_id4)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+  
                // cmd "opm run init file --buildFolderPath ./build"
             // } catch (e) {
             //     echo "opm run init ${it} status : ${e}"
@@ -336,8 +347,11 @@ tasks["report"] = {
 
 parallel tasks
 
-
-
+def dockercmd(prefix, id, suffix){
+    def torun=""+prefix+ ""+id +suffix;
+    sh to run
+}
+def 
 def cmd(command, status = false) {
     // TODO при запуске Jenkins не в режиме UTF-8 нужно написать chcp 1251 вместо chcp 65001
     isunix = isUnix();
