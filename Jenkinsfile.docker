@@ -41,8 +41,9 @@ def behaviortask(build, path, suffix, version){
                 try{
                     println "before env.LOGOS_LEVEL = \'DEBUG\' "
                     env.LOGOS_LEVEL = 'DEBUG'
-                    cmdstring='docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id${suffix}${suffix}'
+                    cmdstring='docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client \> ./container_id${suffix}${suffix}'
                     echo cmdstring;
+                    sh cmdstring;
                     // sh 'printenv'
                     sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id${suffix}${suffix}'
                     sleep 5
