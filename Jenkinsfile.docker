@@ -58,7 +58,7 @@ def behaviortask(build, path, suffix, version){
                         sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"'
                         sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"'
                         //cmd "opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json";
-                    }
+                    
                 } catch (e) {
                     sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
                     echo "behavior ${build} ${path} ${suffix} status : ${e}"
@@ -321,7 +321,6 @@ tasks["report"] = {
 //}
 
 parallel tasks
-
 
 
 
