@@ -1,5 +1,6 @@
 #!groovy
 def ONECVERSION="8.3.13.1513";
+def cmdstring;
 
 properties([disableConcurrentBuilds(), buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '10', daysToKeepStr: '', numToKeepStr: '10'))])
 def tasks = [:]
@@ -40,6 +41,8 @@ def behaviortask(build, path, suffix, version){
                 try{
                     println "before env.LOGOS_LEVEL = \'DEBUG\' "
                     env.LOGOS_LEVEL = 'DEBUG'
+                    cmdstring='docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id${suffix}${suffix}'
+                    echo cmdstring;
                     // sh 'printenv'
                     sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id${suffix}${suffix}'
                     sleep 5
@@ -86,7 +89,7 @@ builds.each{
         node ("video") {
             stage("behavior video") {
             ws(env.WORKSPACE.replaceAll("%", "_").replaceAll(/(-[^-]+$)/, ""))
-            {
+            {onec32/client
                 try{
                     checkout scm
                     cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
