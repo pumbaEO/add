@@ -42,7 +42,7 @@ def behaviortask(build, path, suffix, version){
                 try{
                 sh "./tools/linux/runtest${suffix}.sh"    
                 } catch (e) {
-                    sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+                    sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
                     echo "behavior ${build} ${path} ${suffix} status : ${e}"
                     sleep 2
                     cmd("7z a -ssw build${build}${suffix}.7z ./build/ -xr!*.cfl", true)
@@ -73,7 +73,7 @@ tasks["buildRelease"] = {
         def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
         gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
         echo gitCommit 
-              dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
+              dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"')
                         
             
             
@@ -82,7 +82,7 @@ tasks["buildRelease"] = {
             
             
             
-            //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
+            //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
             cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
             cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
             cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
