@@ -28,7 +28,7 @@ if (env.filterBuilds && env.filterBuilds.length() > 0 ) {
     builds = builds.findAll{it.contains(env.filterBuilds) || env.filterBuilds.contains(it)};
 }
 
-def behaviortask(build,suffix, path, build, version){
+def behaviortask(build, path, suffix, version){
     return {
 
         node ("test ${suffix}") {
