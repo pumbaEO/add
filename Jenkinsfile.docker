@@ -4,10 +4,10 @@ def cmdstring;
 
 properties([disableConcurrentBuilds(), buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '10', daysToKeepStr: '', numToKeepStr: '10'))])
 def tasks = [:]
-def buildSerivceConf = ["836UF":"8.3.6", "837UF":"8.3.7", "838UF":"8.3.8", "839UF":"8.3.9", "8310UF":"8.3.10"];
+def buildSerivceConf = ["1":"836UF", "2":"837UF", "3":"838UF", "4":"839UF", "5":"8310UF", "1":"8313"];
 //builds = ["82OF", "82UF", "836OF", "836UF", "837UF", "838UF", "839UF", "8310UF"]
 //builds = ["836UF", "837UF", "838UF", "839UF", "8310UF"]
-builds = ["8310UF"]
+builds = ["1","2","3","4","5","6"]
 errorsStash = [:]
 paths = [ "Core/TestClient": "TestClient",
     "StepsGenerator": "StepsGenerator",
@@ -28,45 +28,19 @@ if (env.filterBuilds && env.filterBuilds.length() > 0 ) {
     builds = builds.findAll{it.contains(env.filterBuilds) || env.filterBuilds.contains(it)};
 }
 
-def behaviortask(build, path, suffix, version){
+def behaviortask(build,suffix, path, build, version){
     return {
 
         node ("test ${suffix}") {
                 echo "====== ${build} ${suffix} ====="
-                sleep 5
-                cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
                 checkout scm
                 unstash "buildResults"
+                //cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
+                
+                
                
                 try{
-                    println "before env.LOGOS_LEVEL = \'DEBUG\' "
-                    env.LOGOS_LEVEL = 'DEBUG'
-                     def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
-                     gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
-                    echo gitCommit 
-                    dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
-                    
-                    echo cmdstring;
-                    sh cmdstring;
-                    // sh 'printenv'
-                    sleep 5
-                    sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
-                    dir("build/ServiceBases/junitreport/${suffix}"){}
-                        dir("build/ServiceBases/cucumber/${suffix}"){}
-                        dockercmd("docker exec -u ubuntu", gitCommit, '"  /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build"')
-                        dockercmd("docker exec -u ubuntu", gitCommit, '"  /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run  vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json"')
-                    //sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build" '
-                    //cmd "opm run initib file --buildFolderPath ./build --v8version ${version}"
-                    sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
-                    //withEnv(["VANESSA_JUNITPATH=./ServiceBases/junitreport/${suffix}", "VANESSA_cucumberreportpath=./ServiceBases/cucumber/${suffix}"]) {
-                        //Маленький хак, переход в dir автоматом создает каталог и не надо писать кроссплатформенный mkdir -p 
-                       
-                        echo "========= ${path} ====================="
-                        
-                        dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
-
-                        //cmd "opm run vanessa all --path ./features/${path} --settings ./tools/JSON/VBParams8310linux.json";
-                    
+                sh "./tools/linux/runtest${suffix}.sh"    
                 } catch (e) {
                     sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
                     echo "behavior ${build} ${path} ${suffix} status : ${e}"
@@ -75,8 +49,7 @@ def behaviortask(build, path, suffix, version){
                     archiveArtifacts "build${build}${suffix}.7z"
                     currentBuild.result = 'UNSTABLE'
                 }
-                sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./build"'
-                stash allowEmpty: true, includes: "build/ServiceBases/allurereport/${build}/**, build/ServiceBases/cucumber/${suffix}/**, build/ServiceBases/junitreport/${suffix}/**", name: "${build}${suffix}"
+                stash allowEmpty: true, includes: "build/ServiceBases/allurereport/*/**, build/ServiceBases/cucumber/*/**, build/ServiceBases/junitreport/*/**", name: "${build}"
         }
 
     }
@@ -90,41 +63,10 @@ builds.each{
     }
 }
 
-/*tasks["behavior video write"] = /*{
-        node ("video") {
-            stage("behavior video") {
-            ws(env.WORKSPACE.replaceAll("%", "_").replaceAll(/(-[^-]+$)/, ""))
-            {onec32/client
-                try{
-                    checkout scm
-                    cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
-                    cleanWs(patterns: [[pattern: 'build/ServiceBases/allurereport/8310UF/**', type: 'INCLUDE']]);
-                    dir("build/ServiceBases/allurereport/8310UF"){}
-                    unstash "buildResults"
-
-                    println "before env.LOGOS_LEVEL = \'DEBUG\' "
-                    env.LOGOS_LEVEL = 'DEBUG'
-                    // sh 'printenv'
-
-                    cmd "opm install"
-                    cmd "opm list"
-                    cmd "opm run initib file --buildFolderPath ./build --v8version 8.3.10"
-
-                    cmd "opm run vanessa all --path ./features/Core/TestClient/  --tag video --settings ./tools/JSON/VBParams8310UF.json";
-                } catch (e) {
-                    echo "behavior status : ${e}"
-                    currentBuild.result = 'UNSTABLE'
-                }
-                stash allowEmpty: true, includes: "build/ServiceBases/allurereport/8310UF/**", name: "video"
-            }
-            // }
-            
-        }
-    }
-}*/
 tasks["buildRelease"] = {
     node("master"){
         stage("build release"){
+            echo "1"
             checkout scm
           //  sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id'
         
@@ -145,19 +87,7 @@ tasks["buildRelease"] = {
             cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
             cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
             try{
-                println "before env.LOGOS_LEVEL = \'DEBUG\' "
-                env.LOGOS_LEVEL = 'DEBUG'
-                // sh 'printenv'
-                sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build ./"'
-                dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build  ./"')
-                dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
-                
-                // cmd "7z a add.tar ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf"
-                // cmd "7z a add.7z ./.forbuild/features/ ./.forbuild/lib ./.forbuild/locales ./.forbuild/plugins ./.forbuild/vendor ./.forbuild/bddRunner.epf ./.forbuild/xddTestRunner.epf"
-                // cmd "7z a add.tar.gz add.tar"
-                // cmd "7z a add.tar.bz2 add.tar"
-                // archiveArtifacts '*.ospx, add.tar.gz, add.tar.bz2, add.7z'
-                // stash allowEmpty: false, includes: "*.ospx, add.tar.gz, add.tar.bz2, add.7z", name: "deploy"
+                sh "./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
             } catch (e) {
                 echo "opm build release status : ${e}"
@@ -170,33 +100,6 @@ tasks["buildRelease"] = {
     }
 }
 
-tasks["xdd"] = /*{
-    node("8310UF"){
-        stage("xdd"){
-                checkout scm
-                cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
-                unstash "buildResults"
-                try{
-                    println "before env.LOGOS_LEVEL = \'DEBUG\' "
-                    env.LOGOS_LEVEL = 'DEBUG'
-                    // sh 'printenv'
-sh 'docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:${ONECVERSION} client > ./container_id3'
-sh 'docker exec -u ubuntu "$(cat ./container_id3)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"'
- sh 'docker exec -u ubuntu "$(cat ./container_id3)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run initib file --buildFolderPath ./build --v8version 8.3.13"'
-                    //cmd "opm run initib file --buildFolderPath ./build --v8version 8.3.10"
-
-                    cmd "opm run xdd";
-                } catch (e) {
-                    echo "xdd ${it} status : ${e}"
-                    sleep 2
-                    cmd("7z a -ssw buildXDD.7z ./build/ -xr!*.cfl", true)
-                    archiveArtifacts "buildXDD.7z"
-                    currentBuild.result = 'UNSTABLE'
-                }
-                stash allowEmpty: true, includes: "build/ServiceBases/allurereport/xdd/**, build/ServiceBases/junitreport/**", name: "xdd"
-        }
-    }
-}*/
 firsttasks=[:]
 
 
@@ -206,14 +109,7 @@ firsttasks["master"] = {
             checkout scm
         }
         stage("buld"){
-            //def unix = isUnix()
-             def cmd = 'docker run --detach -eXVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client'
-            gitCommit = sh(returnStdout: true, script: cmd).trim().take(6);
-            echo gitCommit 
-            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
-            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm build  ./"')
-            dockercmd("docker exec -u ubuntu", gitCommit, '" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown 114:118-r ./"')
-                    
+             sh "./tools/linux/build.sh"   
             
             cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']])
             cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']])
