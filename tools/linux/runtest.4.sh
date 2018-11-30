@@ -1,4 +1,4 @@
-docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest} client > ./container_id1
+docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client > ./container_id1
 
 docker ps -a && sleep 5
 
