@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 set -x
+pwd
+ls -al
 docker ps -a
 CID=$(docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client)
 
