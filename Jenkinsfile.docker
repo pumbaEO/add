@@ -126,7 +126,7 @@ firsttasks["master"] = {
             //     echo "opm run init ${it} status : ${e}"
             //     currentBuild.result = 'UNSTABLE'
             // }
-            stash excludes: 'build/cache.txt,build/ib/**,build/ibservice/**, build/ibservicexdd/**', includes: 'build/**', name: 'buildResults'
+            stash excludes: 'build/ibservice/**, build/ibservicexdd/**', includes: 'build/**', name: 'buildResults'
             //stash includes: 'build/**', name: 'buildResults'
         }
     }
