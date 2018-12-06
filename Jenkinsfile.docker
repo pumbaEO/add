@@ -120,6 +120,7 @@ firsttasks["master"] = {
                 env.LOGOS_LEVEL = 'DEBUG'
                 // sh 'printenv'
 
+            echo "stash"
   
                // cmd "opm run init file --buildFolderPath ./build"
             // } catch (e) {
