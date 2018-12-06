@@ -112,12 +112,12 @@ firsttasks["master"] = {
         stage("buld"){
              sh "./tools/linux/build.sh"   
             
-            cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']])
-            cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']])
+            //cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']])
+            //cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']])
             // try{
 
                 println "before env.LOGOS_LEVEL = \'DEBUG\' "
-                env.LOGOS_LEVEL = 'DEBUG'
+                //env.LOGOS_LEVEL = 'DEBUG'
                 // sh 'printenv'
 
             echo "stash"
