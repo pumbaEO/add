@@ -7,10 +7,10 @@ docker ps -a
 CID=$(docker run --detach -e XVFB_RESOLUTION=1920x1080x24 --volume="${PWD}":/home/ubuntu/code onec32/client:latest client)
 
 
-docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 mkdir -p build"
-docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 mkdir -p build/ServiceBases/cucumber"
-docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 mkdir -p build/ServiceBases/allurereport/kkk"
-docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 mkdir -p build/ServiceBases/junitreport/kkk"
+docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo mkdir -p build"
+docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo mkdir -p build/ServiceBases/cucumber"
+docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo mkdir -p build/ServiceBases/allurereport/kkk"
+docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo mkdir -p build/ServiceBases/junitreport/kkk"
 
 #docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 touch -p build"
 #docker run -d -p 4040:4040 --link "$(cat ./container_id)":http wernight/ngrok ngrok http http:6080 > ./container_idngrok
