@@ -8,3 +8,5 @@ docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code
 docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/TestClient/ --settings ./tools/JSON/VBParams8310linux.json"
 docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/StepsGenerator/ --settings ./tools/JSON/VBParams8310linux.json"
 docker exec -u ubuntu "$(cat ./container_id$)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"
+docker stop "$CID"
+docker rm "$CID"

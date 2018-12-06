@@ -32,7 +32,7 @@ if (env.filterBuilds && env.filterBuilds.length() > 0 ) {
 def behaviortask(build, path, suffix, version){
     return {
 
-        node ("test ${suffix}") {
+        node ("master") {
                 echo "====== ${build} ${suffix} ====="
                 checkout scm
                 unstash "buildResults"
