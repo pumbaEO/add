@@ -34,14 +34,14 @@ def behaviortask(build, path, suffix, version){
 
         node ("master") {
                 echo "====== ${build} ${suffix} ====="
-                checkout scm
+               checkout scm
                 unstash "buildResults"
                 //cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
                 
                 
                
                 try{
-                sh "./tools/linux/runtest${suffix}.sh"    
+                sh "./tools/linux/runtest.${suffix}.sh"    
                 } catch (e) {
                     sh 'docker exec -u ubuntu "$(cat ./container_id${suffix})" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
                     echo "behavior ${build} ${path} ${suffix} status : ${e}"
@@ -110,6 +110,7 @@ firsttasks["master"] = {
             checkout scm
         }
         stage("buld"){
+            checkout scm
              sh "./tools/linux/build.sh"   
             
             //cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']])
@@ -127,8 +128,8 @@ firsttasks["master"] = {
             //     echo "opm run init ${it} status : ${e}"
             //     currentBuild.result = 'UNSTABLE'
             // }
-            stash excludes: 'build/ibservice/**, build/ibservicexdd/**', includes: 'build/**', name: 'buildResults'
-            //stash includes: 'build/**', name: 'buildResults'
+            //stash excludes: 'build/ibservice/**, build/ibservicexdd/**', includes: 'build/**', name: 'buildResults'
+            stash includes: 'build/**', name: 'buildResults'
         }
     }
 }
@@ -191,6 +192,7 @@ stage('tests'){
 tasks = [:]
 tasks["report"] = {
     node {
+
         stage("report"){
             cleanWs(patterns: [[pattern: 'build/ServiceBases/**', type: 'INCLUDE']]);
             unstash 'buildResults'
