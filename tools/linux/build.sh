@@ -17,7 +17,7 @@ docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 su
 docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo touch  build/hhkkjj.txt"
 
 #docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 touch -p build"
-#docker run -d -p 4040:4040 --link "$(cat ./container_id)":http wernight/ngrok ngrok http http:6080 > ./container_idngrok
+#docker run -d -p 4040:4040 --link "$CID":http wernight/ngrok ngrok http http:6080 > ./container_idngrok
 docker ps -a && sleep 5
 sleep 5
 docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"
