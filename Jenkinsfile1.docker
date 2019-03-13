@@ -3,7 +3,11 @@ pipeline {
     stages {
         stage('Stage 1') {
             steps {
-                echo 'Hello world!' 
+                checkout scm;
+                echo 'Hello world!' ;
+                cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
+                cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
+                cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
             }
         }
     }
