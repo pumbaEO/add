@@ -148,6 +148,10 @@
 
 	СтрокаЗапуска = "runner run --command СоздатьАдминистратора --ibconnection /F./build/ibservicexdd";
 	ИсполнитьКоманду(СтрокаЗапуска);
+	//СтрокаЗапуска = "runner run --command СоздатьАдминистратора --ibconnection /F./build/ibservice";
+	//ИсполнитьКоманду(СтрокаЗапуска);
+	//СтрокаЗапуска = "runner run --command СоздатьАдминистратора --ibconnection /F./build/ib";
+	//ИсполнитьКоманду(СтрокаЗапуска);
 
 	СтрокаЗапуска = СтрШаблон("oscript ./tools/runner.os compileepf ./lib %1lib --ibname /F./build/ibservice", КаталогСборки);
 	ИсполнитьКоманду(СтрокаЗапуска);
