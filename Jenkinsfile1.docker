@@ -8,9 +8,9 @@ pipeline {
                 cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']]);
-                sh 'pwd';
+                sh 'pwd; ls -al';
                 sh 'ls -al';
-                sh "${WORKSPACE}/tools/linux/release.sh"   
+                sh "pushd ${WORKSPACE}; pwd; ls -al;./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
                 stash allowEmpty: false, includes: "./", name: "deploy"
                 
