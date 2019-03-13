@@ -10,7 +10,7 @@ pipeline {
                 cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']]);
                 sh 'pwd; ls -al';
                 sh 'ls -al';
-                sh "pushd ${WORKSPACE}; pwd; ls -al;./tools/linux/release.sh"   
+                sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
                 stash allowEmpty: false, includes: "./", name: "deploy"
                 
