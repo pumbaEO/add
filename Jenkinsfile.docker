@@ -6,20 +6,20 @@ pipeline {
         stage('release') {
             steps {
                   //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
-            cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
-            cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
-            cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
-            try{
-                sh "./tools/linux/release.sh"   
-                archiveArtifacts '*.ospx, add*.zip'
-            } catch (e) {
-                echo "opm build release status : ${e}"
-                sleep 2
-                currentBuild.result = 'UNSTABLE'
-            }
-            stash allowEmpty: false, includes: "*.ospx, add*.zip", name: "deploy"
+                cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
+                cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
+                cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
+                try{
+                    sh "./tools/linux/release.sh"   
+                    archiveArtifacts '*.ospx, add*.zip'
+                } catch (e) {
+                    echo "opm build release status : ${e}"
+                    sleep 2
+                    currentBuild.result = 'UNSTABLE'
+                }
+                stash allowEmpty: false, includes: "*.ospx, add*.zip", name: "deploy"
 
-        }
+        
                 echo 'Testing..'
             }
         
