@@ -2,7 +2,7 @@
 pipeline {
     agent any
 
-    
+    stages {
         stage('release') {
             steps {
                   //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
@@ -22,9 +22,9 @@ pipeline {
         }
                 echo 'Testing..'
             }
-        }
+        
 
-        stages {
+        
         stage('Build') {
             steps {
                checkout scm
