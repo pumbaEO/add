@@ -15,6 +15,7 @@ pipeline {
 
             stage('release'){
                 steps{
+                    checkout scm;
                     sh "./tools/linux/release.sh"   
                     archiveArtifacts '*.ospx, add*.zip'
                 }
