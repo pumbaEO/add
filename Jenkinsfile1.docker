@@ -1,48 +1,9 @@
-#!groovy
 pipeline {
-    agent any
-
+    agent any 
     stages {
-        stage('Build') {
+        stage('Stage 1') {
             steps {
-               checkout scm
-             sh "./tools/linux/build.sh"
-            }
-        }
-        stage('release') {
-            steps {
-                  //sh 'docker exec -u ubuntu "$(cat ./container_id)" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo chown -R 114 ./"'
-            cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
-            cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
-            cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']])
-            try{
-                sh "./tools/linux/release.sh"   
-                archiveArtifacts '*.ospx, add*.zip'
-            } catch (e) {
-                echo "opm build release status : ${e}"
-                sleep 2
-                currentBuild.result = 'UNSTABLE'
-            }
-            stash allowEmpty: false, includes: "*.ospx, add*.zip", name: "deploy"
-
-        }
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                    try{
-                allure includeProperties: false, jdk: '', 
-                    results: [
-                        [path: './build/ServiceBases/allurereport/']
-                    ]
-                // allure commandline: 'allure2', includeProperties: false, jdk: '', results: [[path: 'build/ServiceBases/allurereport/']]
-            } catch (e) {
-                echo "allure status : ${e}"
-                currentBuild.result = 'UNSTABLE'
-            }
-            junit 'build/ServiceBases/junitreport/**/*.xml'
+                echo 'Hello world!' 
             }
         }
     }
