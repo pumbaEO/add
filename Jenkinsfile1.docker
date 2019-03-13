@@ -3,11 +3,13 @@ pipeline {
     stages {
         stage('Stage 1') {
             steps {
-                checkout scm;
+                //checkout scm;
                 echo 'Hello world!' ;
                 cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']]);
+                sh 'pwd';
+                sh 'ls -al';
                 sh "./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
                 stash allowEmpty: false, includes: "./", name: "deploy"
