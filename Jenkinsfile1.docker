@@ -8,6 +8,7 @@ pipeline {
                 cleanWs(patterns: [[pattern: 'build/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: './.forbuild/**', type: 'INCLUDE']]);
                 cleanWs(patterns: [[pattern: '*.ospx, add.tar.gz, add.tar.bz2, add.7z, add.tar', type: 'INCLUDE']]);
+                stash allowEmpty: false, includes: "./", name: "deploy"
                 
             }
         }
@@ -15,6 +16,7 @@ pipeline {
 
             stage('release'){
                 steps{
+                    unstash "deploy";
                     checkout scm;
                     sh "./tools/linux/release.sh"   
                     archiveArtifacts '*.ospx, add*.zip'
