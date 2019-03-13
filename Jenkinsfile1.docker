@@ -12,17 +12,18 @@ pipeline {
                 sh 'ls -al';
                 sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
-                stash allowEmpty: false, includes: "./", name: "deploy"
+                //stash allowEmpty: false, includes: "./", name: "deploy"
                 
             }
         }
         
 
-            stage('release'){
+            stage('test'){
                 steps{
-                    unstash "deploy";
-                    checkout scm;
-                   
+                    sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/build.sh";
+                    stash allowEmpty: true, includes: "build/ServiceBases/allurereport/**, build/ServiceBases/cucumber/**, build/ServiceBases/junitreport/**", name: "report"
+                    junit 'build/ServiceBases/junitreport/**/*.xml'
+                    
                 }
             }
         //    } catch (e) {
