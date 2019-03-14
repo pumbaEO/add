@@ -22,14 +22,14 @@ pipeline {
                 steps{
                     sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/build.sh";
                     stash allowEmpty: true, includes: "build/ServiceBases/allurereport/**, build/ServiceBases/cucumber/**, build/ServiceBases/junitreport/**", name: "report"
-                    junit 'build/ServiceBases/junitreport/**/*.xml'
+                    //junit 'build/ServiceBases/junitreport/**/*.xml'
                     
                 }
             }
             stage('report'){
                 unstash "report"
                 junit 'build/ServiceBases/junitreport/**/*.xml'
-                
+
 
             }
 
