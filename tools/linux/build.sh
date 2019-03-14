@@ -9,6 +9,7 @@ CIDN=$(docker run -d -p 4040:4040 --link "${CID}":http wernight/ngrok ngrok http
 sleep 5
 
 echo $(curl -s http://127.0.0.1:4040/status | grep -P "http://.*?ngrok.io" -oh)""
+docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm install vanessa-runner"
 docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run init file --buildFolderPath ./build"
 docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/Core/TestClient/ --settings ./tools/JSON/VBParams8310linux.json"
 # docker exec -u ubuntu "$CID" /bin/bash -c "cd /home/ubuntu/code; DISPLAY=:1.0 sudo opm run vanessa all --path ./features/StepsGenerator/ --settings ./tools/JSON/VBParams8310linux.json"
