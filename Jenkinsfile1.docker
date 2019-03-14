@@ -26,6 +26,13 @@ pipeline {
                     
                 }
             }
+            stage('report'){
+                unstash "report"
+                junit 'build/ServiceBases/junitreport/**/*.xml'
+                
+
+            }
+
         //    } catch (e) {
          //       echo "opm build release status : ${e}"
          //       sleep 2
