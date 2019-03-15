@@ -113,7 +113,7 @@
 	ИсполнитьКоманду(СтрокаВыполнения);
 
 	Если НЕ Новый Файл("./build/1Cv8.cf").Существует() Тогда
-		ИсполнитьКоманду("runner unload ./build/1Cv8.cf --ibconnection /F./build/ibservice");
+		//ИсполнитьКоманду("runner unload ./build/1Cv8.cf --ibconnection /F./build/ibservice");
 		// ИсполнитьКоманду("runner compile");
 	Иначе
 		Лог.Информация("./build/1Cv8.cf существует, пропускаем компиляцию");

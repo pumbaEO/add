@@ -1,6 +1,15 @@
 pipeline {
     agent any 
     stages {
+           stage('test'){
+                steps{
+                    unstash "deploy"
+                    sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/build.sh";
+                    stash allowEmpty: true, includes: "build/ServiceBases/allurereport/**, build/ServiceBases/cucumber/**, build/ServiceBases/junitreport/**", name: "report"
+                    //junit 'build/ServiceBases/junitreport/**/*.xml'
+                    
+                }
+            }
         stage('Stage 1') {
             steps {
                 //checkout scm;
@@ -13,19 +22,13 @@ pipeline {
                 sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/release.sh"   
                 archiveArtifacts '*.ospx, add*.zip'
                 //stash allowEmpty: false, includes: "./", name: "deploy"
+                stash allowEmpty: true, includes: "build/**", name: "deploy"
                 
             }
         }
         
 
-            stage('test'){
-                steps{
-                    sh "cd ${WORKSPACE}; pwd; ls -al;./tools/linux/build.sh";
-                    stash allowEmpty: true, includes: "build/ServiceBases/allurereport/**, build/ServiceBases/cucumber/**, build/ServiceBases/junitreport/**", name: "report"
-                    //junit 'build/ServiceBases/junitreport/**/*.xml'
-                    
-                }
-            }
+         
             stage('report'){
                 steps{
                 unstash "report"
