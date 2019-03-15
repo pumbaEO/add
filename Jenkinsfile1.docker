@@ -27,9 +27,10 @@ pipeline {
                 }
             }
             stage('report'){
+                steps{
                 unstash "report"
                 junit 'build/ServiceBases/junitreport/**/*.xml'
-
+                }
 
             }
 
